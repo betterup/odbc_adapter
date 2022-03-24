@@ -17,7 +17,7 @@ module ODBCAdapter
       result.each_with_object([]) do |row, table_names|
         schema_name, table_name, table_type = row[1..3]
         next if respond_to?(:table_filtered?) && table_filtered?(schema_name, table_type)
-        table_names << format_case(table_name)
+        table_names << format_case("#{schema_name}.#{table_name}")
       end
     end
 
