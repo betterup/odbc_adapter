@@ -6,8 +6,13 @@ module ODBCAdapter
     class SnowflakeODBCAdapter < ActiveRecord::ConnectionAdapters::ODBCAdapter
       include ODBCAdapter::Snowflake::SchemaStatements
 
-      def prepared_statements
-        true
+      class BindSubstitution < Arel::Visitors::ToSql
+        include Arel::Visitors::BindVisitor
+      end
+
+      # Snowflake is fairly similar to PG
+      def arel_visitor
+        Arel::Visitors::PostgreSQL.new(self)
       end
     end
   end
